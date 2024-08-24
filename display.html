@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Submissions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+    </style>
+    <script>
+        window.onload = function() {
+            // Retrieve students from local storage
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+
+            // Generate table rows
+            const tableBody = document.getElementById("studentData");
+            students.forEach(student => {
+                const row = document.createElement("tr");
+
+                row.innerHTML = `
+                    <td>${student.name}</td>
+                    <td>${student.mobile}</td>
+                    <td>${student.studentClass}</td>
+                    <td>${student.section}</td>
+                    <td>${student.school}</td>
+                    <td>${student.dateTime}</td>
+                `;
+
+                tableBody.appendChild(row);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h2>Student Submissions</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Mobile Number</th>
+                <th>Class</th>
+                <th>Section</th>
+                <th>School Name</th>
+                <th>Submission Date & Time</th>
+            </tr>
+        </thead>
+        <tbody id="studentData">
+            <!-- Student data will be injected here -->
+        </tbody>
+    </table>
+</body>
+</html>

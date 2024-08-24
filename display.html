@@ -3,65 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Submissions</title>
+    <title>Display Student Data</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 20px;
-        }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
         }
         table, th, td {
-            border: 1px solid #ddd;
+            border: 1px solid black;
         }
         th, td {
-            padding: 12px;
+            padding: 8px;
             text-align: left;
         }
         th {
-            background-color: #4CAF50;
-            color: white;
-        }
-        tr:nth-child(even) {
             background-color: #f2f2f2;
         }
-        h2 {
-            text-align: center;
-            color: #333;
-        }
     </style>
-    <script>
-        function loadStudentData() {
-            fetch('https://docs.google.com/spreadsheets/d/1p8b3bTUw2K563Z-_dSnZ1EnFoa3SeSxbB9XJMGjY-uU/export?format=csv')
-                .then(response => response.json())
-                .then(data => {
-                    const tableBody = document.getElementById("studentData");
-                    tableBody.innerHTML = ""; // Clear existing rows
-
-                    data.values.forEach(row => {
-                        const tableRow = document.createElement("tr");
-
-                        row.forEach(cell => {
-                            const cellData = document.createElement("td");
-                            cellData.textContent = cell;
-                            tableRow.appendChild(cellData);
-                        });
-
-                        tableBody.appendChild(tableRow);
-                    });
-                });
-        }
-
-        // Auto-reload every 30 seconds
-        setInterval(loadStudentData, 30000);
-
-        window.onload = loadStudentData;
-    </script>
 </head>
 <body>
-    <h2>Student Submissions
+    <h2>Student Data</h2>
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Mobile Number</th>
+                <th>Class</th>
+                <th>Section</th>
+                <th>School Name</th>
+                <th>Submission Time</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        function fetchData() {
+            fetch('https://docs.google.com/spreadsheets/d/1p8b3bTUw2K563Z-_dSnZ1EnFoa3SeSxbB9XJMGjY-uU/export?format=csv')
+                .then(response => response.text())
+                .then(data => {
+                    const rows = data.split('\n');
+                    const tableBody = document.querySelector('#data-table tbody');
+                    tableBody.innerHTML = ''; // Clear existing data
+
+                    rows.forEach((row, index) => {
+                        if (index === 0) return; // Skip header row
+                        const columns = row.split(',');
+                        if (columns.length < 6) return; // Skip rows with insufficient columns
+
+                        const rowElement = document.createElement('tr');
+                        columns.forEach(column => {
+                            const cell = document.createElement('td');
+                            cell.textContent = column;
+                            rowElement.appendChild(cell);
+                        });
+                        tableBody.appendChild(rowElement);
+                    });
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        // Fetch data initially and set interval for auto-refresh
+        fetchData();
+        setInterval(fetchData, 30000); // Refresh every 30 seconds
+    </script>
+</body>
+</html>

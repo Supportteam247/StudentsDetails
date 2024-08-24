@@ -37,7 +37,7 @@
     </style>
     <script>
         function loadStudentData() {
-            fetch('https://docs.google.com/spreadsheets/d/1p8b3bTUw2K563Z-_dSnZ1EnFoa3SeSxbB9XJMGjY-uU/edit?usp=sharing')
+            fetch('https://docs.google.com/spreadsheets/d/1p8b3bTUw2K563Z-_dSnZ1EnFoa3SeSxbB9XJMGjY-uU/export?format=csv')
                 .then(response => response.json())
                 .then(data => {
                     const tableBody = document.getElementById("studentData");
